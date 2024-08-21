@@ -2,19 +2,21 @@ import streamlit as st
 import tensorflow as tf
 import numpy as np
 import gdown
+import requests
 
-def download_file_with_retries(url, output, max_retries=3, wait_time=5):
-    for i in range(max_retries):
-        try:
-            gdown.download(url, output, quiet=False)
-            st.success(f"File downloaded successfully: {output}")
-            return output
-        except Exception as e:
-            st.warning(f"Attempt {i+1} failed: {str(e)}. Retrying in {wait_time} seconds...")
-            time.sleep(wait_time)
-    st.error("Failed to download the file after multiple attempts.")
-    return None
 
+def download_file_from_google_drive(url, output_path):
+    try:
+        with requests.get(url, stream=True) as r:
+            r.raise_for_status()
+            with open(output_path, 'wb') as f:
+                for chunk in r.iter_content(chunk_size=8192):
+                    f.write(chunk)
+        st.success(f"Downloaded {output_path}")
+        return output_path
+    except requests.exceptions.RequestException as e:
+        st.error(f"Download failed: {e}")
+        return None
 # Download the model weights
 url_weights = "https://drive.google.com/uc?id=171x-xwdqm2dXMOyZiCfPwY6xU6IWFGyF"
 output_weights = "model.weights.h5"

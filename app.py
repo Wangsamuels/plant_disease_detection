@@ -17,13 +17,16 @@ def download_file_from_google_drive(url, output_path):
     except requests.exceptions.RequestException as e:
         st.error(f"Download failed: {e}")
         return None
-# Download the model weights
+
+# URL and output file names
 url_weights = "https://drive.google.com/uc?id=171x-xwdqm2dXMOyZiCfPwY6xU6IWFGyF"
 output_weights = "model.weights.h5"
+
+# Download weights
 download_file_from_google_drive(url_weights, output_weights)
 
-# Load the weights into the model
-model.load_weights(output_weights)
+# Check if the weights file exists
+st.write(f"Path to weights file: {output_weights}")
 
 # Load the weights into the model
 try:
@@ -31,8 +34,8 @@ try:
     st.success("Model weights loaded successfully.")
 except Exception as e:
     st.error(f"Error loading weights: {e}")
-
 # TensorFlow model prediction function
+
 def model_prediction(test_image):
     image = tf.keras.preprocessing.image.load_img(test_image, target_size=(64, 64))
     input_arr = tf.keras.preprocessing.image.img_to_array(image)

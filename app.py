@@ -25,6 +25,13 @@ download_file_from_google_drive(url_weights, output_weights)
 # Load the weights into the model
 model.load_weights(output_weights)
 
+# Load the weights into the model
+try:
+    model.load_weights(output_weights)
+    st.success("Model weights loaded successfully.")
+except Exception as e:
+    st.error(f"Error loading weights: {e}")
+
 # TensorFlow model prediction function
 def model_prediction(test_image):
     image = tf.keras.preprocessing.image.load_img(test_image, target_size=(64, 64))

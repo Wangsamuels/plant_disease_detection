@@ -2,20 +2,35 @@ import streamlit as st
 import tensorflow as tf
 import numpy as np
 import gdown
+import json
 
-url = "https://drive.google.com/file/d/171x-xwdqm2dXMOyZiCfPwY6xU6IWFGyF/view"
-output = "model.weights.h5"
-gdown.download(url, output, quiet=True)
+# Download the model files
+url_weights = "https://drive.google.com/uc?id=171x-xwdqm2dXMOyZiCfPwY6xU6IWFGyF"
+output_weights = "model.weights.h5"
+gdown.download(url_weights, output_weights, quiet=True)
 
-#Tensorflow model prediction
+url_config = "https://drive.google.com/uc?id=YOUR_CONFIG_JSON_FILE_ID"
+output_config = "config.json"
+gdown.download(url_config, output_config, quiet=True)
+
+# Load the model architecture from the config file
+with open(output_config, 'r') as f:
+    model_config = json.load(f)
+
+model = tf.keras.models.model_from_json(json.dumps(model_config))
+
+# Load the weights into the model
+model.load_weights(output_weights)
+
+# TensorFlow model prediction function
 def model_prediction(test_image):
-    model = tf.keras.models.load_model(output)
     image = tf.keras.preprocessing.image.load_img(test_image, target_size=(64, 64))
     input_arr = tf.keras.preprocessing.image.img_to_array(image)
-    input_arr = np.array([input_arr])
+    input_arr = np.expand_dims(input_arr, axis=0)  # Add batch dimension
     prediction = model.predict(input_arr)
     result_index = np.argmax(prediction)
     return result_index
+
 
 st.sidebar.title("Dashboard")
 app_mode = st.sidebar.selectbox("Select", ["Home", "About", "Disease Recognition"])

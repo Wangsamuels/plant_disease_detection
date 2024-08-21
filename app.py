@@ -18,7 +18,7 @@ app_mode = st.sidebar.selectbox("Select", ["Home", "About", "Disease Recognition
 #HOME PAGE
 if(app_mode=="Home"):
     st.header("PLANT DISEASE RECOGNITION AI")
-    image_path = "plant_image.jpeg"
+    image_path = "https://www.google.com/url?sa=i&url=https%3A%2F%2Fdepositphotos.com%2Fphotos%2Fplant.html&psig=AOvVaw3S2S-OhYERARbmg9cp9rzS&ust=1724320278447000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCOietuHnhYgDFQAAAAAdAAAAABAE"
     st.image(image_path, use_column_width=True)
     st.markdown("""
     Welcome to the Plant Disease Recognition System! 🌿🔍

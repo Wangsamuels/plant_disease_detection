@@ -3,20 +3,29 @@ import tensorflow as tf
 import numpy as np
 import gdown
 
-# Download the model files
+# Function to download a file using gdown
+def download_file_from_google_drive(url, output):
+    try:
+        gdown.download(url, output, quiet=False)
+    except Exception as e:
+        st.error(f"Failed to download the file from Google Drive: {str(e)}")
+
+# Download the model weights
 url_weights = "https://drive.google.com/uc?id=171x-xwdqm2dXMOyZiCfPwY6xU6IWFGyF"
 output_weights = "model.weights.h5"
-output = gdown.download(url_weights, output_weights, quiet=True)
+download_file_from_google_drive(url_weights, output_weights)
+
+# Load the weights into the model
+model.load_weights(output_weights)
 
 # TensorFlow model prediction function
 def model_prediction(test_image):
-    model = tf.keras.models.load_model(output)
+    image = tf.keras.preprocessing.image.load_img(test_image, target_size=(64, 64))
     input_arr = tf.keras.preprocessing.image.img_to_array(image)
     input_arr = np.expand_dims(input_arr, axis=0)  # Add batch dimension
     prediction = model.predict(input_arr)
     result_index = np.argmax(prediction)
     return result_index
-
 
 st.sidebar.title("Dashboard")
 app_mode = st.sidebar.selectbox("Select", ["Home", "About", "Disease Recognition"])

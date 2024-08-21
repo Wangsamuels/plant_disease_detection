@@ -4,7 +4,7 @@ import numpy as np
 import gdown
 
 url = "https://drive.google.com/file/d/171x-xwdqm2dXMOyZiCfPwY6xU6IWFGyF/view"
-output = "training_model.keras"
+output = "model.weights.h5"
 gdown.download(url, output, quiet=True)
 
 #Tensorflow model prediction

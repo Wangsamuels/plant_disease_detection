@@ -3,7 +3,7 @@ import tensorflow as tf
 import numpy as np
 import gdown
 
-url = "your_google_drive_url"
+url = "https://drive.google.com/file/d/171x-xwdqm2dXMOyZiCfPwY6xU6IWFGyF/view"
 output = "training_model.keras"
 gdown.download(url, output, quiet=True)
 
